@@ -1,0 +1,116 @@
+# core.entity_form_display.node.person.default.yml
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.person.field_first_name
+    - field.field.node.person.field_last_name
+    - field.field.node.person.field_gender
+    - field.field.node.person.field_street
+    - field.field.node.person.field_city
+    - field.field.node.person.field_state
+    - field.field.node.person.field_zip
+    - node.type.person
+  module:
+    - path
+    - text
+id: node.person.default
+targetEntityType: node
+bundle: person
+mode: default
+content:
+  created:
+    type: datetime_timestamp
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+  field_first_name:
+    weight: 10 
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+
+  field_last_name:
+    weight: 20
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+
+  field_street:
+    weight: 30 
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+
+  field_city:
+    weight: 40 
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+
+  field_state:
+    weight: 50
+    settings:
+      size: 7
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+
+  field_zip:
+    weight: 60 
+    settings:
+      size: 7
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+
+  field_gender:
+    weight: 25 
+    settings:
+      size: 7
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+
+  path:
+    type: path
+    weight: 5
+    settings: {  }
+    third_party_settings: {  }
+  promote:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 3
+    third_party_settings: {  }
+  sticky:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 4
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 1
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }
+

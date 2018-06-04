@@ -1,0 +1,9 @@
+name: 'Homework'
+description: 'Submission by Khalim Harris for NYULH'
+type: module
+core: 8.x
+package: Puzzles
+dependencies:
+  - field
+  - node
+  - options

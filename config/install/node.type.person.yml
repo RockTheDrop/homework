@@ -1,0 +1,14 @@
+langcode: en
+name: Person
+type: person
+description: "Person CT to accept automated entries from NYU Langone Tables"
+status: true
+dependencies:
+  enforced: 
+  module:
+    - homework
+help: ''
+new_revision: false
+preview_mode: 1
+# LOOK UP display_submitted setting. Not sure what it does.
+display_submitted: false

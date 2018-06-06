@@ -1,0 +1,49 @@
+<?php
+
+use Drupal\node\Entity\Node;
+use Drupal\taxonomy\Entity\Term;
+
+/*** INTERESTING QUERIES ***/
+// select concat(p.first_name, ' ', p.last_name) as title, p.first_name, p.last_name, pa.address_id, a.street, ra.name from person p left join person_address pa on p.person_id=pa.person_id left join address a on a.address_id=pa.address_id left join person_research_area pra on pra.person_id=p.person_id left join research_area ra on ra.research_area_id=pra.research_area_id order by title;
+
+
+
+function homework_install() {
+
+  $address = Node::create(['type' => 'address']);
+  $address->set('nid', 5);
+  $address->set('title', 'The FORTRESS');
+  $address->set('field_street', '111-34 Marion Street');
+  $address->save();
+
+$term1 = \Drupal\taxonomy\Entity\Term::create([
+          'vid' => 'hobbies',
+          'name' => 'Ultimate',
+          'tid' => 5,
+    ]);
+$term1->save();
+
+$term2 = \Drupal\taxonomy\Entity\Term::create([
+          'vid' => 'hobbies',
+          'name' => 'Freestyle',
+          'tid' => 6,
+    ]);
+$term2->save();
+
+
+
+  $person = Node::create(['type' => 'person']);
+  $person->set('nid', 80);
+  $person->set('title', 'Programmed PERSON');
+  $person->set('field_first_name', 'Programmed');
+  $person->set('field_last_name', 'PERSON');
+  $person->set('field_address', 5);
+////////////
+  $person->field_hobbies->setValue([$term1, $term2]);
+////////////
+#  $my_article->set('field_text', 'My text');
+#  $my_article->set('field_image', FID);
+#  $my_article->set('field_user', UID);
+#  $my_article->enforceIsNew();
+  $person->save();
+}

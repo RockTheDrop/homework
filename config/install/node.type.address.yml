@@ -1,0 +1,14 @@
+langcode: en
+name: Address
+type: address
+description: "Address CT to be referenced from Person"
+status: true
+dependencies:
+  enforced: 
+  module:
+    - homework
+help: ''
+new_revision: false
+preview_mode: 1
+# LOOK UP display_submitted setting. Not sure what it does.
+display_submitted: false

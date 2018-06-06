@@ -2,13 +2,13 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_city
-    - node.type.person
-id: node.person.field_city
-field_name: field_city
+    - field.storage.node.field_street
+    - node.type.address
+id: node.address.field_street
+field_name: field_street
 entity_type: node
-bundle: person
-label: 'City'
+bundle: address
+label: 'Street'
 description: ''
 required: false
 translatable: false

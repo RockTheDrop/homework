@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+name: Hobbies
+vid: hobbies
+description: 'Use tags to assign study categories or hobbies to person nodes'
+hierarchy: 0
+weight: 0

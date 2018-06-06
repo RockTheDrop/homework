@@ -1,18 +1,19 @@
-# core.entity_form_display.node.person.default.yml
+# core.entity_form_display.node.address.default.yml
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.person.field_first_name
-    - field.field.node.person.field_last_name
-    - field.field.node.person.field_gender
-    - node.type.person
+    - field.field.node.address.field_street
+    - field.field.node.address.field_city
+    - field.field.node.address.field_state
+    - field.field.node.address.field_zip
+    - node.type.address
   module:
     - path
     - text
-id: node.person.default
+id: node.address.default
 targetEntityType: node
-bundle: person
+bundle: address
 mode: default
 content:
   created:
@@ -20,49 +21,37 @@ content:
     weight: 2
     settings: {  }
     third_party_settings: {  }
-  field_first_name:
-    weight: 10 
+  field_street:
+    weight: 30 
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
 
-  field_last_name:
-    weight: 20
+  field_city:
+    weight: 40 
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
 
-  field_gender:
-    weight: 25 
+  field_state:
+    weight: 50
     settings:
       size: 7
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
 
-  field_hobbies:
-    weight: 30
-    type: entity_reference_autocomplete_tags
+  field_zip:
+    weight: 60 
     settings:
-      match_operator: CONTAINS
-      size: 60
+      size: 7
       placeholder: ''
     third_party_settings: {  }
-    region: content
-
-  field_address:
-    weight: 30 
-    type: entity_reference_autocomplete
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    region: content
+    type: string_textfield
 
   path:
     type: path

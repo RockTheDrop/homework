@@ -2,13 +2,13 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_state
-    - node.type.person
-id: node.person.field_state
-field_name: field_state
+    - field.storage.node.field_zip
+    - node.type.address
+id: node.address.field_zip
+field_name: field_zip
 entity_type: node
-bundle: person
-label: 'State'
+bundle: address
+label: 'Zip'
 description: ''
 required: false
 translatable: false

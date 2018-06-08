@@ -6,34 +6,20 @@ use Drupal\taxonomy\Entity\Term;
 /*** INTERESTING QUERIES ***/
 // select concat(p.first_name, ' ', p.last_name) as title, p.first_name, p.last_name, pa.address_id, a.street, ra.name from person p left join person_address pa on p.person_id=pa.person_id left join address a on a.address_id=pa.address_id left join person_research_area pra on pra.person_id=p.person_id left join research_area ra on ra.research_area_id=pra.research_area_id order by title;
 
-/***  Same Query, multiline:
-select
-    concat(p.first_name, ' ', p.last_name) as title,
-    p.first_name,
-    p.last_name,
-    p.gender,
-    pa.address_id,
-    a.street,
-    ra.name
-from
-    person p
-        left join person_address pa on p.person_id=pa.person_id
-        left join address a on a.address_id=pa.address_id
-        left join person_research_area pra on pra.person_id=p.person_id
-        left join research_area ra on ra.research_area_id=pra.research_area_id
-order by
-    title
-***/
 
-
-
+/**
+ * Implementation of hook_install
+ */
 function homework_install() {
   $connection = \Drupal::database('default');
 
+  // Required Address Nodes since "Persons" can have multiple addresses - use entity reference to connect them
   $sql = "SELECT address_id, street, city, state, zip FROM {address}";
   $result = $connection->query($sql);
-//  $result = $query->fetchAll();
-  // If the query was successful, step through the rows and load some nodes.
+
+  // If the connection / query was successful, step through the rows and load some nodes.
+  // Use existing IDs and force them into Node IDs. They're currently empty and we have that 
+  // control to select what we want our IDs to be.
   if ($result) {
     // Load up Address Nodes for reference from Persons
     while ($row = $result->fetchAssoc()) {
@@ -51,8 +37,10 @@ function homework_install() {
 
   $sql = "SELECT research_area_id, name FROM {research_area}";
   $result = $connection->query($sql);
-//  $result = $query->fetchAll();
-  // If the query was successful, step through the rows and load some nodes.
+
+  // If the query was successful, step through the rows and add some Taxonomy Term Hobbies
+  // Use existing IDs and force them into term IDs. They're currently empty and we have that control.
+  // This also prevents the need for a lookup when adding to Person Nodes
   if ($result) {
     // Load up Terms for reference from Persons
     while ($row = $result->fetchAssoc()) {
@@ -66,11 +54,14 @@ function homework_install() {
     }
   }
 
-  $connection = \Drupal::database('default');
   $sql = "select concat(p.first_name, ' ', p.last_name) as title, p.person_id, p.first_name, p.last_name, p.gender, pa.address_id, ra.research_area_id FROM person p left join person_address pa on p.person_id=pa.person_id left join address a on a.address_id=pa.address_id left join person_research_area pra on pra.person_id=p.person_id left join research_area ra on ra.research_area_id=pra.research_area_id order by title";
 
   $result = $connection->query($sql);
-  // If the query was successful, step through the rows and load some nodes.
+  // If the connection / query was successful, step through the rows and add some Person Nodes.
+  // Persons that were already saved have to be treated differently from those that haven't.
+  // If a person is recurring in our source data that means that there are multiple addresses or
+  // multiple hobbies/research areas for that person. We have to inspect what's saved already and add
+  // the new address or hobby without creating a new node. Then save it
   if ($result) {
     while ($row = $result->fetchAssoc()) {
 
@@ -84,41 +75,52 @@ function homework_install() {
         $person->set('field_last_name', $row['last_name']);
         $person->set('field_gender', $row['gender']);
 
+        // add an address if it exists.
         if (!empty($row['address_id'])) {
           $person->set('field_address', $row['address_id']);
         }
+
+        // add a hobby if it exists.
         if (!empty($row['research_area_id'])) {
           // $person->field_hobbies->setValue(Term::load($row['research_area_id']));
           $person->set('field_hobbies', [Term::load($row['research_area_id'])]);
         }
       } else {  // When the person IS a node...
-
+        // Inspect existing and add the new Hobby/Research Area
         if (!empty($row['research_area_id'])) {
           // Get a new array for taxonomy terms since it's possible this will be a list.
           $terms = [];
           $hobbies = $person->get('field_hobbies')->getValue();
   
           foreach ($hobbies as $idx => $hobby) {
+            // Index by Research Area ID to avoid duplicates
             $terms[$hobby['target_id']] = Term::load($hobby['target_id']);
           }
+          // Index by Research Area ID to avoid duplicates
+          // Add the new Research area to the existing list.
           $terms[$row['research_area_id']] = Term::load($row['research_area_id']);
   
           $person->set('field_hobbies', $terms);
         }
 
+        // Inspect existing and add the Address
         if (!empty($row['address_id'])) {
           $addresses = [];
           $current_address_ids = $person->get('field_address')->getValue();
 
           foreach ($current_address_ids as $idx => $address) {
+            // Index by Address ID to avoid duplicates
             $addresses[$address['target_id']] = $address['target_id'];
           }
+          // Index by Address ID to avoid duplicates
+          // Add the new Address to the existing list.
           $addresses[$row['address_id']] = $row['address_id'];
           $person->set('field_address', $addresses);
 
         }
 
       }
+      // Save the Person Node with all current data.
       $person->save();
     }
   

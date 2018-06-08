@@ -91,31 +91,37 @@ function homework_install() {
           // $person->field_hobbies->setValue(Term::load($row['research_area_id']));
           $person->set('field_hobbies', [Term::load($row['research_area_id'])]);
         }
-        $person->save();
-        unset($person);
       } else {  // When the person IS a node...
 
-        $terms = [];
-        $hobbies = $person->get('field_hobbies')->getValue();
-
-        foreach ($hobbies as $idx => $hobby) {
-          $terms[$hobby['target_id']] = Term::load($hobby['target_id']);
+        if (!empty($row['research_area_id'])) {
+          // Get a new array for taxonomy terms since it's possible this will be a list.
+          $terms = [];
+          $hobbies = $person->get('field_hobbies')->getValue();
+  
+          foreach ($hobbies as $idx => $hobby) {
+            $terms[$hobby['target_id']] = Term::load($hobby['target_id']);
+          }
+          $terms[$row['research_area_id']] = Term::load($row['research_area_id']);
+  
+          $person->set('field_hobbies', $terms);
         }
-        $terms[$row['research_area_id']] = Term::load($row['research_area_id']);
 
-        $person->set('field_hobbies', $terms);
+        if (!empty($row['address_id'])) {
+          $addresses = [];
+          $current_address_ids = $person->get('field_address')->getValue();
 
-        $person->save();
-        unset($person);
+          foreach ($current_address_ids as $idx => $address) {
+            $addresses[$address['target_id']] = $address['target_id'];
+          }
+          $addresses[$row['address_id']] = $row['address_id'];
+          $person->set('field_address', $addresses);
+
+        }
+
       }
-
+      $person->save();
     }
-    
+  
   }
-
-
-
-
-
 
 }

@@ -1,0 +1,15 @@
+homework.content:
+  path: '/hello'
+  defaults:
+    _controller: '\Drupal\homework\Controller\HomeworkController::content'
+    _title: 'Hello World'
+  requirements:
+    _permission: 'access content'
+
+homework.form:
+  path: '/person-search'
+  defaults:
+    _title: 'Person Search Form'
+    _form: '\Drupal\homework\Form\PersonSearchForm'
+  requirements:
+    _permission: 'access content'

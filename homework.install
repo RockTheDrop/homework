@@ -2,6 +2,7 @@
 
 use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Term;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
 
 /*** INTERESTING QUERIES ***/
 // select concat(p.first_name, ' ', p.last_name) as title, p.first_name, p.last_name, pa.address_id, a.street, ra.name from person p left join person_address pa on p.person_id=pa.person_id left join address a on a.address_id=pa.address_id left join person_research_area pra on pra.person_id=p.person_id left join research_area ra on ra.research_area_id=pra.research_area_id order by title;
@@ -127,5 +128,12 @@ function homework_install() {
     }
   
   }
+  // Add a menu item for easy access
+  $menu_link = MenuLinkContent::create([
+    'title' => 'Person Search',
+    'link' => ['uri' => 'internal:/person-search'],
+    'menu_name' => 'main',
+    'weight' => 10,
+  ])->save();
 
 }

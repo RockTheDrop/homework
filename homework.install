@@ -35,6 +35,7 @@ function homework_install() {
     }
   }
 
+  // select all the Research Areas (hobbies?) and save them as Taxonomy Terms.
   $sql = "SELECT research_area_id, name FROM {research_area}";
   $result = $connection->query($sql);
 
@@ -54,6 +55,7 @@ function homework_install() {
     }
   }
 
+  // Now select out all of the 'persons', addresses (by ID), and research areas (by ID) and save persons with references using the original (maintained) IDs - because we can.
   $sql = "select concat(p.first_name, ' ', p.last_name) as title, p.person_id, p.first_name, p.last_name, p.gender, pa.address_id, ra.research_area_id FROM person p left join person_address pa on p.person_id=pa.person_id left join address a on a.address_id=pa.address_id left join person_research_area pra on pra.person_id=p.person_id left join research_area ra on ra.research_area_id=pra.research_area_id order by title";
 
   $result = $connection->query($sql);

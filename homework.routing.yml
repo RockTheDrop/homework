@@ -1,11 +1,3 @@
-homework.content:
-  path: '/hello'
-  defaults:
-    _controller: '\Drupal\homework\Controller\HomeworkController::content'
-    _title: 'Hello World'
-  requirements:
-    _permission: 'access content'
-
 homework.form:
   path: '/person-search'
   defaults:

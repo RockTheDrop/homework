@@ -72,7 +72,7 @@ class PersonSearchForm extends FormBase {
 
     $q_string = "?last_name={$last_name}&address={$address}&gender={$gender}";
 
-    $response = new RedirectResponse('/persons-with-search' . $q_string);
+    $response = new RedirectResponse('/person-search' . $q_string);
 
     $request = \Drupal::request();
     // Save the session so things like messages get saved.

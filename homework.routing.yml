@@ -1,7 +1,7 @@
 homework.form:
   path: '/person-search'
   defaults:
-    _title: 'Person Search Form'
+    _title: 'Person Search'
     _form: '\Drupal\homework\Form\PersonSearchForm'
   requirements:
     _permission: 'access content'
